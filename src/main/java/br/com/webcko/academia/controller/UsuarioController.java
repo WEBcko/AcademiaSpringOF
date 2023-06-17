@@ -71,4 +71,14 @@ public class UsuarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable("id") final Long id) {
+        try {
+            this.usuarioService.deletar(id);
+            return ResponseEntity.ok().body("Registro deletado com sucesso");
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.internalServerError().body("Error " + e.getCause().getCause().getMessage());
+        }
+    }
 }

@@ -7,6 +7,7 @@ import br.com.webcko.academia.repository.UsuarioRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 @Service
 public class UsuarioService {
@@ -38,8 +39,12 @@ public class UsuarioService {
         this.usuarioRepository.save(usuarioBanco);
     }
     @Transactional(rollbackFor = Exception.class)
-    public void deletar(final Usuario usuario){
-        final Usuario usuarioBanco = this.usuarioRepository.findById(usuario.getId()).orElse(null);
+    public void deletar(final Long id){
+        final Usuario usuarioBanco = this.usuarioRepository.findById(id).orElse(null);
+
+        Assert.isTrue(usuarioBanco != null, "Registro não encontrado.");
+
+        this.usuarioRepository.delete(usuarioBanco);
     }
 
     @Transactional(rollbackFor = Exception.class)
