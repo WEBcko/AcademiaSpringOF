@@ -7,7 +7,6 @@ import br.com.webcko.academia.repository.UsuarioRepository;
 import br.com.webcko.academia.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,8 @@ public class UsuarioController {
     @Autowired
     public UsuarioService usuarioService;
 
-    @GetMapping
-    public ResponseEntity<?> findByIdParam(@RequestParam("id") final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findByIdParam(@PathVariable("id") final Long id){
         final Usuario usuario = this.usuarioRepository.findById(id).orElse(null);
 
         return usuario == null
@@ -37,11 +36,10 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastro (@RequestBody final Usuario request){
-        //usuarioService.criarUsuario(request.getNome(), request.getSenha(), request.getRole());
-        this.usuarioRepository.save(request);
+    public ResponseEntity<?> cadastro (@RequestBody final UsuarioRequest request){
+        usuarioService.criarUsuario(request);
 
-        return  ResponseEntity.ok().body("deu");
+        return ResponseEntity.ok().body("Usuario cadastrado com sucesso.");
     }
 
     @PutMapping
@@ -53,7 +51,7 @@ public class UsuarioController {
                 throw new RuntimeException("Nao foi possivel identificar o registro informado");
             }
 
-            this.usuarioRepository.save(usuario);
+            this.usuarioRepository.save(usuarioBanco);
             return ResponseEntity.ok("Registro atualizado com sucesso");
         }catch(DataIntegrityViolationException e){
             return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
@@ -62,14 +60,15 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{usuarioId}/role")
-    public Usuario updateUsuarioRole(@PathVariable Long id, UsuarioRole novoRole){
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if(usuario != null){
-            usuario.setRole(novoRole);
-            return  usuarioRepository.save(usuario);
+    @PutMapping("/{id}/role")
+    public ResponseEntity<?> alterarUsuarioRole(@PathVariable("id") Long id, @RequestBody Usuario usuario){
+        Usuario usuarioAtualizado = usuarioService.tipoUsuarioRole(id, usuario.getRole());
+
+        if (usuarioAtualizado != null) {
+            return ResponseEntity.ok().body("Role do usuário atualizado com sucesso.");
+        } else {
+            return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
-        return null;
     }
 
 }

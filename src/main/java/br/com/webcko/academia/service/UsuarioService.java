@@ -1,5 +1,6 @@
 package br.com.webcko.academia.service;
 
+import br.com.webcko.academia.DTOs.UsuarioRequest;
 import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.entity.UsuarioRole;
 import br.com.webcko.academia.repository.UsuarioRepository;
@@ -13,26 +14,28 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+//    @Transactional(rollbackFor = Exception.class)
+//    public Usuario buscarPorId(final Long id){
+//
+//        return usuarioRepository.findById(id).orElse(null);
+//    }
     @Transactional(rollbackFor = Exception.class)
-    public Usuario buscarPorId(final Long id){
-        return usuarioRepository.findById(id).orElse(null);
-    }
-    @Transactional(rollbackFor = Exception.class)
-    public void criarUsuario(String nome, String senha, UsuarioRole role){
+    public void criarUsuario(UsuarioRequest request) {
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(request.getNome());
+        novoUsuario.setEmail(request.getEmail());
+        novoUsuario.setTelefone(request.getTelefone());
+        novoUsuario.setSenha(request.getSenha());
+        novoUsuario.setRole(UsuarioRole.CLIENTE);
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(nome);
-        usuario.setSenha(senha);
-        usuario.setRole(role);
-
-        this.usuarioRepository.save(usuario);
+        usuarioRepository.save(novoUsuario);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void editar(final Usuario usuario){
         final Usuario usuarioBanco = this.usuarioRepository.findById(usuario.getId()).orElse(null);
 
-        this.usuarioRepository.save(usuario);
+        this.usuarioRepository.save(usuarioBanco);
     }
     @Transactional(rollbackFor = Exception.class)
     public void deletar(final Usuario usuario){
@@ -40,12 +43,13 @@ public class UsuarioService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Usuario tipoUsuarioRole(Long id, UsuarioRole novoRole){
+    public Usuario tipoUsuarioRole(Long id, UsuarioRole role){
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if(usuario != null){
-            usuario.setRole(novoRole);
+            usuario.setRole(role);
             return  usuarioRepository.save(usuario);
         }
         return null;
     }
+
 }
