@@ -4,6 +4,7 @@ import br.com.webcko.academia.DTOs.UsuarioRequest;
 import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.entity.UsuarioRole;
 import br.com.webcko.academia.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 //    @Transactional(rollbackFor = Exception.class)
 //    public Usuario buscarPorId(final Long id){
@@ -26,7 +30,8 @@ public class UsuarioService {
         novoUsuario.setNome(request.getNome());
         novoUsuario.setEmail(request.getEmail());
         novoUsuario.setTelefone(request.getTelefone());
-        novoUsuario.setSenha(request.getSenha());
+        String senhaCripto = passwordEncoder.encode(request.getSenha());
+        novoUsuario.setSenha(senhaCripto);
         novoUsuario.setRole(UsuarioRole.CLIENTE);
 
         usuarioRepository.save(novoUsuario);
