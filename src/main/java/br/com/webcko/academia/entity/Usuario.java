@@ -3,13 +3,16 @@ package br.com.webcko.academia.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Table(name = "usuarios", schema = "public")
-public class Usuario extends AbstractEntity{
+public class Usuario extends AbstractEntity implements UserDetails {
 
     @Getter
     @Setter
@@ -17,23 +20,23 @@ public class Usuario extends AbstractEntity{
     private String nome;
 
     @Getter @Setter
-    @Column(name = "peso", nullable = false)
+    @Column(name = "peso")
     private BigDecimal peso;
 
     @Getter @Setter
-    @Column(name = "altura", nullable = false)
+    @Column(name = "altura")
     private BigDecimal altura;
 
     @Getter @Setter
-    @Column(name = "cep", nullable = false, length = 10)
+    @Column(name = "cep", length = 10)
     private String cep;
 
     @Getter @Setter
-    @Column(name = "numero_casa", nullable = false)
+    @Column(name = "numero_casa")
     private int numeroCasa;
 
     @Getter @Setter
-    @Column(name = "data_nascimento", nullable = false, columnDefinition = "DATE")
+    @Column(name = "data_nascimento", columnDefinition = "DATE")
     private LocalDate dataNascimento;
 
     @Getter @Setter
@@ -41,7 +44,7 @@ public class Usuario extends AbstractEntity{
     private String telefone;
 
     @Getter @Setter
-    @Column(name = "cpf", nullable = false, unique = true, length = 16)
+    @Column(name = "cpf", unique = true, length = 16)
     private String cpf;
 
     @Getter @Setter
@@ -57,4 +60,38 @@ public class Usuario extends AbstractEntity{
     @Column(name = "role", nullable = false)
     private UsuarioRole role;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nome;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
