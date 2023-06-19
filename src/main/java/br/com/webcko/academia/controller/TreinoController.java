@@ -27,7 +27,7 @@ public class TreinoController {
     @Autowired
     private TreinoService treinoService;
 
-    @GetMapping("/{id}")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") final Long id){
 
         Treino treino = this.treinoRepository.findById(id).orElse(null);

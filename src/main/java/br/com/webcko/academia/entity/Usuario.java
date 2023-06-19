@@ -1,5 +1,6 @@
 package br.com.webcko.academia.entity;
 
+import br.com.webcko.academia.DTOs.LoginRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,6 +60,13 @@ public class Usuario extends AbstractEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UsuarioRole role;
+
+    public static Usuario fromLoginRequest(LoginRequest loginRequest) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(loginRequest.getUsername());
+        usuario.setSenha(loginRequest.getSenha());
+        return usuario;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
