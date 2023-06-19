@@ -19,11 +19,6 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Transactional(rollbackFor = Exception.class)
-//    public Usuario buscarPorId(final Long id){
-//
-//        return usuarioRepository.findById(id).orElse(null);
-//    }
     @Transactional(rollbackFor = Exception.class)
     public void criarUsuario(UsuarioRequest request) {
         Usuario novoUsuario = new Usuario();
@@ -38,10 +33,21 @@ public class UsuarioService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void editar(final Usuario usuario){
+    public void editar(final Long id, final Usuario usuario){
         final Usuario usuarioBanco = this.usuarioRepository.findById(usuario.getId()).orElse(null);
 
-        this.usuarioRepository.save(usuarioBanco);
+        if (usuarioBanco != null) {
+            usuarioBanco.setNome(usuario.getNome());
+            usuarioBanco.setEmail(usuario.getEmail());
+            usuarioBanco.setTelefone(usuario.getTelefone());
+            usuarioBanco.setSenha(usuario.getSenha());
+            usuarioBanco.setRole(usuario.getRole());
+            usuarioBanco.setCpf(usuario.getCpf());
+
+            this.usuarioRepository.save(usuarioBanco);
+        } else {
+            throw new RuntimeException("Não foi possível identificar o registro informado");
+        }
     }
     @Transactional(rollbackFor = Exception.class)
     public void deletar(final Long id){

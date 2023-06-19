@@ -7,6 +7,7 @@ import br.com.webcko.academia.repository.UsuarioRepository;
 import br.com.webcko.academia.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,19 +45,11 @@ public class UsuarioController {
 
     @PutMapping
     public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Usuario usuario){
-        try{
-            final Usuario usuarioBanco = this.usuarioRepository.findById(id).orElse(null);
-
-            if(usuarioBanco == null || !usuarioBanco.getId().equals(usuario.getId())){
-                throw new RuntimeException("Nao foi possivel identificar o registro informado");
-            }
-
-            this.usuarioRepository.save(usuarioBanco);
-            return ResponseEntity.ok("Registro atualizado com sucesso");
-        }catch(DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().body("Error " + e.getMessage());
+        try {
+            usuarioService.editar(id, usuario);
+            return ResponseEntity.ok("Registro atualizado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o registro.");
         }
     }
 
