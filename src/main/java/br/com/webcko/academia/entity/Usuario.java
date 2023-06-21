@@ -69,8 +69,8 @@ public class Usuario extends AbstractEntity implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<? extends GrantedAuthority> getAuthorities() {//metodo que faz parte da interface do UserDetails
+        return role.getAuthorities();//retorna as autoridades de usuario no enum UsuarioRole
     }
 
     @Override

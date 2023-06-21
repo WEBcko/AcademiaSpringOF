@@ -35,8 +35,6 @@ public class AutenticacaoController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
         try {
-            Usuario usuario = Usuario.fromLoginRequest(loginRequest);
-
             // Criar um objeto de autenticação com as credenciais fornecidas
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getSenha())
