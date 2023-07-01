@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/login").permitAll()
+                .requestMatchers("/api/usuario/**").hasRole("ADMIN")
                 .anyRequest().authenticated()//permitindo qualquer requisicao para essa URL
                 .and()
                 .sessionManagement()
