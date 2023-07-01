@@ -12,8 +12,6 @@ import java.util.Date;
 @Service
 public class TokenService {
 
-    private static final String CHAVE_SECRETA = "SuaChaveSecreta";
-
 
     public String gerarToken(Usuario usuario) {
         Key chave = Keys.secretKeyFor(SignatureAlgorithm.HS512);

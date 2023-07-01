@@ -30,6 +30,9 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+
+
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
@@ -44,7 +47,7 @@ public class AutenticacaoController {
 
             // Obter o usuário autenticado a partir do objeto de autenticação
             Usuario usuarioAutenticado = (Usuario) authentication.getPrincipal();
-
+            System.out.println(usuarioAutenticado);
             String token = tokenService.gerarToken(usuarioAutenticado);
 
             System.out.println("Token gerado: " + token);
