@@ -30,9 +30,6 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-
-
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
