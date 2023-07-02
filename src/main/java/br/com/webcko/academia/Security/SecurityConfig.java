@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/api/login").permitAll()
+                .requestMatchers("/api/usuario").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/usuario/lista").hasRole(UsuarioRole.ADMIN.getPermissions().toString())
                 .anyRequest().authenticated()//permitindo qualquer requisicao para essa URL
                 .and()

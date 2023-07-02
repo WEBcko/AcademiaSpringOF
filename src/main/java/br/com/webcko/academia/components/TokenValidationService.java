@@ -19,7 +19,8 @@ public class TokenValidationService {
         try {
             Jwts.parser().setSigningKey(CHAVE_SECRETA).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException
+                 | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             return false;
         }
     }
