@@ -26,8 +26,7 @@ public class TreinoController {
 
     @Autowired
     private TreinoService treinoService;
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") final Long id){
 
         Treino treino = this.treinoRepository.findById(id).orElse(null);
@@ -55,7 +54,7 @@ public class TreinoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Treino treino){
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Treino treino){
         try{
 
             this.treinoService.editar(id,treino);
@@ -68,7 +67,7 @@ public class TreinoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
+    public ResponseEntity<?> deletar (@PathVariable("id") final Long id) {
 
             try {
                 this.treinoService.deletar(id);

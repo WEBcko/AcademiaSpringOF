@@ -11,12 +11,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping(value = "/api")
@@ -34,22 +33,24 @@ public class AutenticacaoController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
-        try {
-            Usuario usuario = Usuario.fromLoginRequest(loginRequest);
 
+        System.out.println(loginRequest);
+        try {
             // Criar um objeto de autenticação com as credenciais fornecidas
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getSenha())
             );
+            System.out.println("authentication: " + authentication);
 
             // Obter o usuário autenticado a partir do objeto de autenticação
             Usuario usuarioAutenticado = (Usuario) authentication.getPrincipal();
-
+            System.out.println(usuarioAutenticado);
             String token = tokenService.gerarToken(usuarioAutenticado);
 
             System.out.println("Token gerado: " + token);
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
+            System.out.println("erro");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
