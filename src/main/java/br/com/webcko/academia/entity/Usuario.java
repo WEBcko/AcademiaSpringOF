@@ -34,7 +34,7 @@ public class Usuario extends AbstractEntity implements UserDetails {
 
     @Getter @Setter
     @Column(name = "numero_casa")
-    private int numeroCasa;
+    private BigDecimal numeroCasa;
 
     @Getter @Setter
     @Column(name = "data_nascimento", columnDefinition = "DATE")

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Controller
 @RequestMapping(value = "/api/usuario")
@@ -29,6 +31,12 @@ public class UsuarioController {
         return usuario == null
           ? ResponseEntity.badRequest().body("Usuario nao encontrado")
           : ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<Page<Usuario>> getAllRequest(Pageable pageable) {
+        return ResponseEntity.ok(this.usuarioService.listAll(pageable));
+
     }
 
     @GetMapping("/lista")

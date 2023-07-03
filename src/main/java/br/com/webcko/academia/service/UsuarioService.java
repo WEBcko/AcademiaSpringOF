@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class UsuarioService {
@@ -18,6 +20,10 @@ public class UsuarioService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public Page<Usuario> listAll(Pageable pageable) {
+        return this.usuarioRepository.findAll(pageable);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public void criarUsuario(UsuarioRequest request) {

@@ -3,10 +3,13 @@ package br.com.webcko.academia.service;
 import br.com.webcko.academia.entity.Exercicio;
 import br.com.webcko.academia.entity.GrupoMuscular;
 import br.com.webcko.academia.entity.TreinoExercicio;
+import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.repository.ExercicioRepository;
 import br.com.webcko.academia.repository.GrupoMuscularRepository;
 import br.com.webcko.academia.repository.TreinoExercicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -24,6 +27,10 @@ public class ExercicioService {
 
     @Autowired
     private TreinoExercicioRepository treinoExercicioRepository;
+
+    public Page<Exercicio> listAll(Pageable pageable) {
+        return this.exercicioRepository.findAll(pageable);
+    }
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -61,8 +68,6 @@ public class ExercicioService {
         Assert.isTrue(exercicioBanco != null, "Registro não encontrado");
 
         final List<TreinoExercicio> treinos_exs = this.treinoExercicioRepository.findExercicio(exercicioBanco);
-
-
 
         if(treinos_exs.isEmpty()){
             this.exercicioRepository.delete(exercicioBanco);

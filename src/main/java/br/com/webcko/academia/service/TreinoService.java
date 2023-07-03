@@ -15,7 +15,7 @@ public class TreinoService {
 
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(final Treino treino){
-        Assert.isTrue(treino.getCodigoOrdem() == null,"Erro, campo vazio.");
+        Assert.isTrue(treino.getCodigoOrdem() != null,"Erro, campo vazio.");
 
         this.treinoRepository.save(treino);
     }
@@ -27,6 +27,8 @@ public class TreinoService {
         Assert.isTrue(treinoBanco != null || treino.getId().equals(id), "Registro não encontrado");
 
         Assert.isTrue(treino.getId() != null, "ID já existente.");
+
+        this.treinoRepository.save(treino);
     }
 
     @Transactional(rollbackFor = Exception.class)

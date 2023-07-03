@@ -1,10 +1,13 @@
 package br.com.webcko.academia.controller;
 
 import br.com.webcko.academia.entity.Exercicio;
+import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.repository.ExercicioRepository;
 import br.com.webcko.academia.service.ExercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,12 @@ public class ExercicioController {
 
     }
 
+    @GetMapping("/role")
+    public ResponseEntity<Page<Exercicio>> getAllRequest(Pageable pageable) {
+        return ResponseEntity.ok(this.exercicioService.listAll(pageable));
+
+    }
+
     @GetMapping("/lista")
     public ResponseEntity<?> listaExercicio(){
         return ResponseEntity.ok(this.exercicioRepository.findAll());
@@ -45,8 +54,8 @@ public class ExercicioController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Exercicio exercicio){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Exercicio exercicio){
         try{
 
             this.exercicioService.editar(id,exercicio);

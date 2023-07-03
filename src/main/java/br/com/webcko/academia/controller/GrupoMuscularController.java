@@ -1,10 +1,13 @@
 package br.com.webcko.academia.controller;
 
 import br.com.webcko.academia.entity.GrupoMuscular;
+import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.repository.GrupoMuscularRepository;
 import br.com.webcko.academia.service.GrupoMuscularService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,12 @@ public class GrupoMuscularController {
         return grupo == null
                 ? ResponseEntity.badRequest().body("Nenhum registro encontrado")
                 : ResponseEntity.ok(grupo);
+
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<Page<GrupoMuscular>> getAllRequest(Pageable pageable) {
+        return ResponseEntity.ok(this.grupoMuscularService.listAll(pageable));
 
     }
 
@@ -54,9 +63,11 @@ public class GrupoMuscularController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id, @RequestBody final GrupoMuscular grupo){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id, @RequestBody final GrupoMuscular grupo){
         try{
+            System.out.println("dentro do try EDITAR");
+            System.out.println(id);
             this.grupoMuscularService.editar(id, grupo);
             return ResponseEntity.ok(grupo);
         }catch(DataIntegrityViolationException e){
@@ -64,6 +75,7 @@ public class GrupoMuscularController {
         }catch(RuntimeException e){
             return ResponseEntity.badRequest().body("Error " + e.getMessage());
         }
+
     }
 
     @DeleteMapping

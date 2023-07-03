@@ -47,8 +47,8 @@ public class TreinoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Treino treino){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Treino treino){
         try{
 
             this.treinoService.editar(id,treino);
