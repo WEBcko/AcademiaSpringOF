@@ -52,6 +52,7 @@ public class UsuarioController {
 //    }
     @GetMapping("/lista")
     public ResponseEntity<?> listaCompleta(){
+
         return ResponseEntity.ok(this.usuarioRepository.findAll());
     }
 

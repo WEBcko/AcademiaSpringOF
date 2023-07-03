@@ -36,16 +36,14 @@ public class AutenticacaoController {
 
         System.out.println(loginRequest);
         try {
+            String token = tokenService.gerarToken(loginRequest.getUsername(), loginRequest.getSenha());
+            System.out.println("Token gerado: " + token);
             // Criar um objeto de autenticação com as credenciais fornecidas
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getSenha())
             );
             System.out.println("authentication: " + authentication);
 
-            // Obter o usuário autenticado a partir do objeto de autenticação
-            Usuario usuarioAutenticado = (Usuario) authentication.getPrincipal();
-            System.out.println(usuarioAutenticado);
-            String token = tokenService.gerarToken(usuarioAutenticado);
 
             System.out.println("Token gerado: " + token);
             return ResponseEntity.ok(token);
