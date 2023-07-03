@@ -50,6 +50,7 @@ public class UsuarioController {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou ausente");
 //        }
 //    }
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/lista")
     public ResponseEntity<?> listaCompleta(){
 

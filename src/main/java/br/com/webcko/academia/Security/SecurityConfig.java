@@ -50,8 +50,9 @@ public class SecurityConfig{
                 .requestMatchers("/api/configuracao/**").permitAll()
                 .requestMatchers("/api/entradasaida/**").permitAll()
                 .requestMatchers("/api/exercicio/**").permitAll()
-                .requestMatchers("api/grupo/**").permitAll()
+                .requestMatchers("/api/grupo/**").hasRole("ADMIN")
                 .requestMatchers("/api/treino/**").permitAll()
+                .requestMatchers("/api/treinoexercicios/**").permitAll()
                 .requestMatchers("/api/treinoexercicios/**").permitAll()
                 .anyRequest().authenticated()//permitindo qualquer requisicao para essa URL
                 .and()
