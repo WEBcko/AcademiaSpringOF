@@ -1,10 +1,12 @@
 package br.com.webcko.academia.controller;
 
 import br.com.webcko.academia.DTOs.UsuarioRequest;
+//import br.com.webcko.academia.components.TokenValidationService;
 import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.entity.UsuarioRole;
 import br.com.webcko.academia.repository.UsuarioRepository;
 import br.com.webcko.academia.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,11 @@ public class UsuarioController {
     @Autowired
     public UsuarioService usuarioService;
 
-    @GetMapping
-    public ResponseEntity<?> findByIdParam(@RequestParam("id") final Long id){
+//    @Autowired
+//    private TokenValidationService tokenValidationService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findByIdParam(@PathVariable("id") final Long id){
         final Usuario usuario = this.usuarioRepository.findById(id).orElse(null);
 
         return usuario == null
@@ -31,45 +36,62 @@ public class UsuarioController {
           : ResponseEntity.ok(usuario);
     }
 
+//    @GetMapping("/lista")
+//    public ResponseEntity<?> listaCompleta(HttpServletRequest request){
+//        String token = tokenValidationService.getTokenFromRequest(request);
+//
+//        if (token != null && tokenValidationService.validateToken(token)) {
+//            // Token válido, pode prosseguir com a lógica do método
+//
+//            return ResponseEntity.ok(this.usuarioRepository.findAll());
+//        } else {
+//            // Token inválido ou ausente, retornar uma resposta de erro
+//
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou ausente");
+//        }
+//    }
     @GetMapping("/lista")
     public ResponseEntity<?> listaCompleta(){
+
         return ResponseEntity.ok(this.usuarioRepository.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastro (@RequestBody final Usuario request){
-        //usuarioService.criarUsuario(request.getNome(), request.getSenha(), request.getRole());
-        this.usuarioRepository.save(request);
+    public ResponseEntity<?> cadastro (@RequestBody final UsuarioRequest request){
+        usuarioService.criarUsuario(request);
 
-        return  ResponseEntity.ok().body("deu");
+        return ResponseEntity.ok().body("Usuario cadastrado com sucesso.");
     }
 
     @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Usuario usuario){
-        try{
-            final Usuario usuarioBanco = this.usuarioRepository.findById(id).orElse(null);
-
-            if(usuarioBanco == null || !usuarioBanco.getId().equals(usuario.getId())){
-                throw new RuntimeException("Nao foi possivel identificar o registro informado");
-            }
-
-            this.usuarioRepository.save(usuario);
-            return ResponseEntity.ok("Registro atualizado com sucesso");
-        }catch(DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error" + e.getCause().getCause().getMessage());
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().body("Error " + e.getMessage());
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Usuario usuario){
+        try {
+            usuarioService.editar(id, usuario);
+            return ResponseEntity.ok("Registro atualizado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o registro.");
         }
     }
 
-    @PutMapping("/{usuarioId}/role")
-    public Usuario updateUsuarioRole(@PathVariable Long id, UsuarioRole novoRole){
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if(usuario != null){
-            usuario.setRole(novoRole);
-            return  usuarioRepository.save(usuario);
+    @PutMapping("/{id}/role")
+    public ResponseEntity<?> alterarUsuarioRole(@PathVariable("id") Long id, @RequestBody Usuario usuario){
+        Usuario usuarioAtualizado = usuarioService.tipoUsuarioRole(id, usuario.getRole());
+
+        if (usuarioAtualizado != null) {
+            return ResponseEntity.ok().body("Role do usuário atualizado com sucesso.");
+        } else {
+            return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
-        return null;
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable("id") final Long id) {
+        try {
+            this.usuarioService.deletar(id);
+            return ResponseEntity.ok().body("Registro deletado com sucesso");
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.internalServerError().body("Error " + e.getCause().getCause().getMessage());
+        }
+    }
 }

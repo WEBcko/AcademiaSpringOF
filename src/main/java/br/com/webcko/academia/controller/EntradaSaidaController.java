@@ -31,7 +31,7 @@ public class EntradaSaidaController {
         }
     }
     @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final EntradaSaida entradaSaida){
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final EntradaSaida entradaSaida){
         try{
             final EntradaSaida entradaSaidaData = this.entradaSaidaRepository.findById(id).orElse(null);
 
@@ -49,7 +49,7 @@ public class EntradaSaidaController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deletar (@RequestParam("id") final Long id){
+    public ResponseEntity<?> deletar (@PathVariable("id") final Long id){
 
         final EntradaSaida entradaSaidaData = this.entradaSaidaRepository.findById(id).orElse(null);
 

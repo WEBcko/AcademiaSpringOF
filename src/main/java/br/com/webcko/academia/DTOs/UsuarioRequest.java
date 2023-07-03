@@ -1,17 +1,24 @@
 package br.com.webcko.academia.DTOs;
 
+import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.entity.UsuarioRole;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Data;
 
-public class UsuarioRequest {
-    @Getter
-    @Setter
+
+@Data
+public class UsuarioRequest extends Usuario {
+
+
     private String nome;
-    @Getter
-    @Setter
+
+    private String email;
+
+    private String telefone;
+
     private String senha;
-    @Getter
-    @Setter
+
+    @Enumerated(EnumType.STRING)
     private UsuarioRole role;
 }

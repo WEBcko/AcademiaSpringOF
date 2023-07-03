@@ -47,7 +47,7 @@ public class ExercicioController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar (@RequestParam("id") final Long id, @RequestBody final Exercicio exercicio){
+    public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Exercicio exercicio){
         try{
 
             this.exercicioService.editar(id,exercicio);
@@ -60,7 +60,7 @@ public class ExercicioController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deletar (@RequestParam("id") final Long id) {
+    public ResponseEntity<?> deletar (@PathVariable("id") final Long id) {
 
         try {
             this.exercicioService.deletar(id);
