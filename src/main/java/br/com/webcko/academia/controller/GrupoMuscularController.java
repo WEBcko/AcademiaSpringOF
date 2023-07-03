@@ -55,7 +55,7 @@ public class GrupoMuscularController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id, @RequestBody final GrupoMuscular grupo){
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id, @RequestBody final GrupoMuscular grupo){
         try{
             this.grupoMuscularService.editar(id, grupo);
             return ResponseEntity.ok(grupo);
@@ -67,7 +67,7 @@ public class GrupoMuscularController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deletar(@RequestParam("id") final Long id) {
+    public ResponseEntity<?> deletar(@PathVariable("id") final Long id) {
         try {
             this.grupoMuscularService.deletar(id);
             return ResponseEntity.ok().body("Registro deletado com sucesso");

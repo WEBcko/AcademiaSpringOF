@@ -4,6 +4,7 @@ package br.com.webcko.academia.controller;
 import br.com.webcko.academia.entity.TreinoExercicio;
 import br.com.webcko.academia.repository.TreinoExercicioRepository;
 import br.com.webcko.academia.service.TreinoExercicioService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,7 @@ public class TreinoExercicioController {
 
 
     @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id, @RequestBody final TreinoExercicio treinoExercicio){
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id, @RequestBody final TreinoExercicio treinoExercicio){
         try{
             this.treinoExercicioService.editar(id,treinoExercicio);
             return ResponseEntity.ok("Alterado com sucesso");
@@ -55,7 +56,7 @@ public class TreinoExercicioController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deletar(@RequestParam("id") final Long id){
+    public ResponseEntity<?> deletar(@PathVariable("id") final Long id){
         try{
             this.treinoExercicioService.deletar(id);
             return ResponseEntity.ok("Registro deletado");
