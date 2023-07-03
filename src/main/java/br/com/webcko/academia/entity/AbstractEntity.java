@@ -38,4 +38,10 @@ public abstract class AbstractEntity {
                 this.dataAtualizado = LocalDateTime.now();
         }
 
+        @Override
+        public String toString() {
+                return "AbstractEntity{" +
+                        "id=" + id +
+                        '}';
+        }
 }

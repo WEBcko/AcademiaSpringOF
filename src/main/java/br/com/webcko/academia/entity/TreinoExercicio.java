@@ -24,12 +24,12 @@ public class TreinoExercicio extends AbstractEntity {
 
     @Getter
     @Setter
-    @Column(name = "dificuldade", nullable = false, length = 50)
-    private String dificuldade;
+    @Column(name = "dificuldade")
+    private BigDecimal dificuldade;
 
     @Getter
     @Setter
-    @Column(name="peso", nullable = false)
+    @Column(name="peso")
     private BigDecimal peso;
 
     @Getter

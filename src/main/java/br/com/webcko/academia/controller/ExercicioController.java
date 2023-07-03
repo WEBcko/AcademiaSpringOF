@@ -1,5 +1,6 @@
 package br.com.webcko.academia.controller;
 
+import br.com.webcko.academia.DTOs.ExercicioDTO;
 import br.com.webcko.academia.entity.Exercicio;
 import br.com.webcko.academia.entity.Usuario;
 import br.com.webcko.academia.repository.ExercicioRepository;
@@ -45,11 +46,16 @@ public class ExercicioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar (@RequestBody final Exercicio exercicio){
+    public ResponseEntity<?> cadastrar (@RequestBody final ExercicioDTO exercicio){
+
+        System.out.println(exercicio.getIdGrupoMuscular().getId());
+
+        System.out.println("PASSOU");
         try{
             this.exercicioService.cadastrar(exercicio);
             return ResponseEntity.ok("Registro salvo com sucesso");
         }catch(Exception erro){
+            System.out.println(exercicio);
             return ResponseEntity.badRequest().body("Error" + erro.getMessage());
         }
     }

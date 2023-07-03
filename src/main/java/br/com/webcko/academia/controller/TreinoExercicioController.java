@@ -1,6 +1,7 @@
 package br.com.webcko.academia.controller;
 
 
+import br.com.webcko.academia.DTOs.TreinoExercicioDTO;
 import br.com.webcko.academia.entity.Exercicio;
 import br.com.webcko.academia.entity.TreinoExercicio;
 import br.com.webcko.academia.repository.TreinoExercicioRepository;
@@ -37,14 +38,25 @@ public class TreinoExercicioController {
 
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<?> listar(){
+    @GetMapping("/lista")
+    public ResponseEntity<?> listaTreinoExercicio(){
         return ResponseEntity.ok(this.treinoExercicioRepository.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final TreinoExercicio treinoExercicio){
+    public ResponseEntity<?> cadastrar(@RequestBody final TreinoExercicioDTO treinoExercicio){
         try{
+            System.out.println("EXERCICIO");
+            System.out.println(treinoExercicio.getIdExercicio());
+            System.out.println("TREINO");
+            System.out.println(treinoExercicio.getIdTreino());
+            System.out.println("Series");
+            System.out.println(treinoExercicio.getSeries());
+            System.out.println("dificuldade");
+            System.out.println(treinoExercicio.getDificuldade());
+            System.out.println("peso");
+            System.out.println(treinoExercicio.getPeso());
+
             this.treinoExercicioService.cadastrar(treinoExercicio);
             return ResponseEntity.ok("Cadastrado");
         }catch(RuntimeException e){

@@ -17,4 +17,11 @@ public class Exercicio extends AbstractEntity{
     @Column(name = "nome", nullable = false)
     private String nome;
 
+    @Override
+    public String toString() {
+        return "Exercicio{" +
+                "idGrupoMuscular=" + idGrupoMuscular +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 }
