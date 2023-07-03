@@ -46,7 +46,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/api/login").permitAll()
-                .requestMatchers( "/api/usuario/**").hasRole("ADMIN")
+                .requestMatchers( "/api/usuario/**").permitAll()
                 .requestMatchers("/api/configuracao/**").permitAll()
                 .requestMatchers("/api/entradasaida/**").permitAll()
                 .requestMatchers("/api/exercicio/**").permitAll()
