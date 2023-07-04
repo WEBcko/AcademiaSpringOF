@@ -46,14 +46,15 @@ public class SecurityConfig{
                 .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/api/login").permitAll()
-                .requestMatchers( "/api/usuario/**").permitAll()
+
+                .requestMatchers( "/api/usuario/**").permitAll()//hasAnyRole("ADMIN", "PERSONAL")
                 .requestMatchers("/api/configuracao/**").permitAll()
                 .requestMatchers("/api/entradasaida/**").permitAll()
                 .requestMatchers("/api/exercicio/**").permitAll()
-                .requestMatchers("/api/grupo/**").hasRole("ADMIN")
+                .requestMatchers("/api/grupo/**").permitAll()
                 .requestMatchers("/api/treino/**").permitAll()
                 .requestMatchers("/api/treinoexercicios/**").permitAll()
-                .requestMatchers("/api/treinoexercicios/**").permitAll()
+
                 .anyRequest().authenticated()//permitindo qualquer requisicao para essa URL
                 .and()
                 .sessionManagement()
