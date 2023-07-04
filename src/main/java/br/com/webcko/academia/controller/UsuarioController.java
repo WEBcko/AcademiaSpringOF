@@ -9,6 +9,8 @@ import br.com.webcko.academia.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,6 +52,12 @@ public class UsuarioController {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou ausente");
 //        }
 //    }
+
+    @GetMapping("/role")
+    public ResponseEntity<Page<Usuario>> getAllRequest(Pageable pageable) {
+        return ResponseEntity.ok(this.usuarioService.listAll(pageable));
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/lista")
     public ResponseEntity<?> listaCompleta(){
