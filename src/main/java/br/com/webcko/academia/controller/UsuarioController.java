@@ -72,13 +72,13 @@ public class UsuarioController {
         return ResponseEntity.ok().body("Usuario cadastrado com sucesso.");
     }
 
-    @PutMapping
+    @PutMapping("/editar/{id}")
     public ResponseEntity<?> editar (@PathVariable("id") final Long id, @RequestBody final Usuario usuario){
         try {
-            usuarioService.editar(id, usuario);
+            this.usuarioService.editar(id, usuario);
             return ResponseEntity.ok("Registro atualizado com sucesso.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o registro.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error " + e.getMessage());
         }
     }
 

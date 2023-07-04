@@ -76,6 +76,7 @@ public class SecurityConfig{
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public JWTAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager) throws Exception {
         JWTAuthenticationFilter filter = new JWTAuthenticationFilter(authenticationManager, tokenService, userDetailsService);

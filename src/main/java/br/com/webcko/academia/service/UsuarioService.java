@@ -46,9 +46,16 @@ public class UsuarioService {
             usuarioBanco.setNome(usuario.getNome());
             usuarioBanco.setEmail(usuario.getEmail());
             usuarioBanco.setTelefone(usuario.getTelefone());
-            usuarioBanco.setSenha(usuario.getSenha());
             usuarioBanco.setRole(usuario.getRole());
             usuarioBanco.setCpf(usuario.getCpf());
+
+            if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+                String senhaCripto = passwordEncoder.encode(usuario.getSenha());
+                usuarioBanco.setSenha(senhaCripto);
+            }else{
+                usuarioBanco.setSenha(usuarioBanco.getSenha());
+            }
+
 
             this.usuarioRepository.save(usuarioBanco);
         } else {

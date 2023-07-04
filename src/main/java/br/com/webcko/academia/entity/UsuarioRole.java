@@ -2,6 +2,7 @@ package br.com.webcko.academia.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -36,15 +37,25 @@ public enum UsuarioRole {
     @Getter
     private final Set<Permissoes> permissions;//criado para acessar as permissoes do enum Permissoes
 
-    public List<SimpleGrantedAuthority> getAuthorities() {//retorna na lista de permissao de cada role
-        var authorities = getPermissions()//pego as permissoes do enum Permissoes
-                .stream()//mapeio cada permissao para uma permissao correspondente
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toList());
-        //com o getPermission de cada permissao temos a permissao em String que é passado para SimpleGranted...
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = permissions.stream()
+          .map(permission -> new SimpleGrantedAuthority(permission.name()))
+          .collect(Collectors.toList());
+
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+
         return authorities;
-        //adiciona a autoridade de nível superior (ROLE) com o nome do tipo de usuário
-        //convenção do spring security, peguei na net
     }
+
+//    public List<SimpleGrantedAuthority> getAuthorities() {//retorna na lista de permissao de cada role
+//        var authorities = getPermissions()//pego as permissoes do enum Permissoes
+//                .stream()//mapeio cada permissao para uma permissao correspondente
+//                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+//                .collect(Collectors.toList());
+//        //com o getPermission de cada permissao temos a permissao em String que é passado para SimpleGranted...
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+//        return authorities;
+//        //adiciona a autoridade de nível superior (ROLE) com o nome do tipo de usuário
+//        //convenção do spring security, peguei na net
+//    }
 }
